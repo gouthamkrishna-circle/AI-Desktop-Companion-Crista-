@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" width="100%" height="100%">
+  <defs>
+    <!-- Dark glossy head gradient -->
+    <radialGradient id="headGloss" cx="38%" cy="32%" r="65%">
+      <stop offset="0%" stop-color="#2a2e38"/>
+      <stop offset="25%" stop-color="#14171e"/>
+      <stop offset="70%" stop-color="#08090d"/>
+      <stop offset="100%" stop-color="#020305"/>
+    </radialGradient>
+
+    <!-- Crimson neon glow gradient -->
+    <linearGradient id="neonRed" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff4458"/>
+      <stop offset="50%" stop-color="#ff1a35"/>
+      <stop offset="100%" stop-color="#990014"/>
+    </linearGradient>
+
+    <!-- Horn inner glow -->
+    <linearGradient id="hornGlow" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ff002b"/>
+      <stop offset="60%" stop-color="#ff334c"/>
+      <stop offset="100%" stop-color="#ff8093"/>
+    </linearGradient>
+
+    <!-- Red drop shadow filter -->
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+
+    <filter id="intenseGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="12" result="blur2"/>
+      <feGaussianBlur stdDeviation="4" result="blur1"/>
+      <feMerge>
+        <feMergeNode in="blur2"/>
+        <feMergeNode in="blur1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <g id="mantis-robot">
+    <!-- Orbital Energy Ring (Sweeping around body) -->
+    <ellipse cx="160" cy="225" rx="115" ry="32" fill="none" stroke="#ff1a35" stroke-width="4" opacity="0.85" filter="url(#intenseGlow)" transform="rotate(-14 160 225)"/>
+    <ellipse cx="160" cy="225" rx="115" ry="32" fill="none" stroke="#ffffff" stroke-width="1.5" opacity="0.7" transform="rotate(-14 160 225)"/>
+
+    <!-- Left Antenna / Horn -->
+    <path d="M 115 110 C 85 70, 75 35, 100 12 C 105 7, 108 12, 106 18 C 100 38, 105 65, 128 95 Z" 
+          fill="url(#hornGlow)" filter="url(#glow)"/>
+    <path d="M 118 112 C 90 75, 84 40, 102 16" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.6"/>
+
+    <!-- Right Antenna / Horn (Prominent sweeping curved horn) -->
+    <path d="M 205 105 C 245 60, 275 22, 290 8 C 294 4, 296 9, 293 15 C 280 45, 255 78, 220 115 Z" 
+          fill="url(#hornGlow)" filter="url(#intenseGlow)"/>
+    <path d="M 210 108 C 248 65, 275 30, 289 12" fill="none" stroke="#ffffff" stroke-width="2.5" opacity="0.8"/>
+
+    <!-- Rear Ear Wings / Side Spikes -->
+    <path d="M 85 145 C 55 140, 42 125, 48 118 C 55 125, 75 132, 92 138 Z" fill="url(#neonRed)" filter="url(#glow)"/>
+    <path d="M 235 145 C 265 140, 282 128, 276 120 C 268 126, 248 132, 230 138 Z" fill="url(#neonRed)" filter="url(#glow)"/>
+
+    <!-- Floating Lower Body -->
+    <path d="M 135 210 L 185 210 L 175 248 L 160 262 L 145 248 Z" fill="url(#headGloss)"/>
+    <path d="M 148 220 L 172 220 L 165 245 L 160 250 L 155 245 Z" fill="url(#neonRed)" filter="url(#glow)"/>
+
+    <!-- Left & Right Floating Arm Pods -->
+    <ellipse cx="98" cy="210" rx="16" ry="12" fill="url(#headGloss)" transform="rotate(25 98 210)"/>
+    <path d="M 90 214 Q 82 230 92 236" fill="none" stroke="#ff1a35" stroke-width="3" filter="url(#glow)"/>
+
+    <ellipse cx="222" cy="210" rx="16" ry="12" fill="url(#headGloss)" transform="rotate(-25 222 210)"/>
+    <path d="M 230 214 Q 238 230 228 236" fill="none" stroke="#ff1a35" stroke-width="3" filter="url(#glow)"/>
+
+    <!-- Head / Visor Chassis (Smooth chibi oval) -->
+    <ellipse cx="160" cy="155" rx="76" ry="64" fill="url(#headGloss)"/>
+    <ellipse cx="160" cy="155" rx="76" ry="64" fill="none" stroke="#ff1a35" stroke-width="2.5" opacity="0.6" filter="url(#glow)"/>
+
+    <!-- Head Top Glossy Highlight -->
+    <path d="M 115 122 C 130 108, 185 106, 205 120 C 185 114, 135 115, 115 122 Z" fill="#ffffff" opacity="0.4"/>
+
+    <!-- Glowing Red Ear Discs -->
+    <circle cx="86" cy="162" r="14" fill="#0c0e14" stroke="#ff1a35" stroke-width="3" filter="url(#glow)"/>
+    <circle cx="86" cy="162" r="6" fill="#ff1a35" filter="url(#intenseGlow)"/>
+
+    <circle cx="234" cy="162" r="14" fill="#0c0e14" stroke="#ff1a35" stroke-width="3" filter="url(#glow)"/>
+    <circle cx="234" cy="162" r="6" fill="#ff1a35" filter="url(#intenseGlow)"/>
+
+    <!-- Face Visor Display Area -->
+    <ellipse cx="160" cy="162" rx="58" ry="42" fill="#050608"/>
+
+    <!-- Cute Smiling White LED Eyes (^_^ shape) -->
+    <g id="led-eyes" filter="url(#intenseGlow)">
+      <!-- Left Eye: Cute Curved Arc -->
+      <path d="M 124 165 Q 138 142 150 165" fill="none" stroke="#ffffff" stroke-width="6.5" stroke-linecap="round"/>
+      <path d="M 124 165 Q 138 142 150 165" fill="none" stroke="#ff4458" stroke-width="1.5" stroke-linecap="round"/>
+
+      <!-- Right Eye: Cute Curved Arc -->
+      <path d="M 170 165 Q 182 142 196 165" fill="none" stroke="#ffffff" stroke-width="6.5" stroke-linecap="round"/>
+      <path d="M 170 165 Q 182 142 196 165" fill="none" stroke="#ff4458" stroke-width="1.5" stroke-linecap="round"/>
+
+      <!-- Subtle pink/red blush spots -->
+      <ellipse cx="120" cy="176" rx="7" ry="3.5" fill="#ff1a35" opacity="0.45"/>
+      <ellipse cx="200" cy="176" rx="7" ry="3.5" fill="#ff1a35" opacity="0.45"/>
+    </g>
+
+    <!-- Chin/Chest V-Neck Glow Collar -->
+    <path d="M 144 205 L 160 216 L 176 205" fill="none" stroke="#ff1a35" stroke-width="3.5" stroke-linecap="round" filter="url(#intenseGlow)"/>
+  </g>
+</svg>

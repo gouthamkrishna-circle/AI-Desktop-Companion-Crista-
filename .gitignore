@@ -1,0 +1,10 @@
+node_modules/
+*.log
+*.db
+*.db-shm
+*.db-wal
+.mantis/
+dist/
+.DS_Store
+tests/*.png
+tests/*.db*

@@ -1,0 +1,764 @@
+/* ============================================================
+   PROJECT MANTIS — Crimson Stealth Desktop Companion
+   Pure Mantis UI: Roaming Chibi Robot, Assistant Panel,
+   Priorities Card, and Floating Command Bar.
+   ============================================================ */
+
+:root {
+  --bg-hud-card: rgba(15, 17, 23, 0.88);
+  --bg-hud-hover: rgba(24, 28, 38, 0.95);
+  --bg-glass: rgba(14, 16, 22, 0.78);
+
+  --accent-red: #ff2a44;
+  --accent-crimson: #e50914;
+  --accent-glow: rgba(255, 42, 68, 0.35);
+  --accent-glow-soft: rgba(255, 42, 68, 0.15);
+
+  --text-main: #f5f6fa;
+  --text-muted: #8e94a0;
+  --text-dim: #5c6270;
+
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-red: rgba(255, 42, 68, 0.6);
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-pill: 9999px;
+
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
+
+body.desktop-hud-theme {
+  font-family: var(--font-family);
+  background: transparent;
+  color: var(--text-main);
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+body.desktop-hud-theme::-webkit-scrollbar {
+  width: 4px;
+}
+body.desktop-hud-theme::-webkit-scrollbar-thumb {
+  background: rgba(255, 42, 68, 0.3);
+  border-radius: 4px;
+}
+
+/* Mouse click-through container rules */
+.no-drag {
+  -webkit-app-region: no-drag;
+}
+.drag-region {
+  -webkit-app-region: drag;
+}
+
+/* Glass Card Base */
+.interactive-card {
+  background: var(--bg-hud-card);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.75);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.interactive-card:hover {
+  border-color: rgba(255, 42, 68, 0.35);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 15px var(--accent-glow-soft);
+}
+
+/* ============================================================
+   1. TOP-RIGHT WINDOW CONTROLS
+   ============================================================ */
+.window-controls-bar {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-radius: var(--radius-pill);
+  z-index: 1000;
+  background: rgba(14, 16, 22, 0.85);
+}
+
+.win-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.win-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.win-btn.pinned {
+  color: var(--accent-red);
+}
+
+.win-btn.win-close:hover {
+  background: var(--accent-crimson);
+  color: #fff;
+}
+
+/* ============================================================
+   2. ROAMING CHIBI CRISTA COMPANION
+   ============================================================ */
+.mantis-character-cluster {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  z-index: 850;
+  margin-top: 32px;
+  cursor: grab;
+}
+
+.mantis-character-cluster:active {
+  cursor: grabbing;
+}
+
+.mantis-speech-banner {
+  background: var(--bg-hud-card);
+  backdrop-filter: blur(28px);
+  border: 1px solid var(--border-subtle);
+  border-left: 2px solid var(--accent-red);
+  border-bottom: 2px solid var(--accent-red);
+  box-shadow: -4px 6px 18px var(--accent-glow-soft);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  flex: 1;
+  animation: floatSubtle 4s ease-in-out infinite;
+  transition: opacity 0.3s ease;
+}
+
+.speech-banner-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.speech-tag {
+  color: var(--accent-red);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.speech-time {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.dismiss-speech-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0 4px;
+}
+.dismiss-speech-btn:hover {
+  color: #fff;
+}
+
+.speech-banner-body {
+  font-size: 12px;
+  line-height: 1.45;
+  color: #e2e8f0;
+}
+
+.mantis-avatar-box {
+  width: 100px;
+  height: 100px;
+  flex-shrink: 0;
+  position: relative;
+  cursor: pointer;
+  animation: floatAvatar 3.5s ease-in-out infinite alternate;
+}
+
+.chibi-avatar-img {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 10px 22px rgba(255, 42, 68, 0.45));
+  transition: transform 0.25s ease;
+}
+
+.mantis-avatar-box:hover .chibi-avatar-img {
+  transform: scale(1.1) translateY(-4px);
+  filter: drop-shadow(0 14px 28px rgba(255, 42, 68, 0.75));
+}
+
+@keyframes floatAvatar {
+  0% { transform: translateY(0px) rotate(0deg); }
+  100% { transform: translateY(-7px) rotate(-1.5deg); }
+}
+
+@keyframes floatSubtle {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-4px); }
+}
+
+/* ============================================================
+   3. MAIN ASSISTANT PANEL (CRISTA • ONLINE)
+   ============================================================ */
+.assistant-main-panel {
+  position: relative;
+  width: 100%;
+  height: 380px;
+  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 18px;
+  z-index: 850;
+  border-left: 2px solid var(--accent-red);
+  box-shadow: -4px 8px 24px var(--accent-glow-soft);
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.panel-title {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #fff;
+}
+
+.online-indicator {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent-red);
+  margin-left: 8px;
+  letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.pulse-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--accent-red);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--accent-red);
+  display: inline-block;
+}
+
+.header-icon-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.header-icon-btn:hover {
+  background: rgba(255, 42, 68, 0.2);
+  color: #fff;
+  border-color: var(--accent-red);
+}
+
+.header-icon-btn.active {
+  background: var(--accent-red);
+  color: #fff;
+  box-shadow: 0 0 12px var(--accent-red);
+}
+
+/* Tabs */
+.panel-tab-bar {
+  display: flex;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 4px;
+  border-radius: var(--radius-md);
+  margin-bottom: 12px;
+}
+
+.panel-tab {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 4px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.panel-tab.active {
+  background: rgba(255, 42, 68, 0.18);
+  color: #fff;
+  border: 1px solid var(--accent-red);
+  box-shadow: 0 0 10px var(--accent-glow-soft);
+}
+
+/* Search bar with red mic */
+.panel-search-box {
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-pill);
+  padding: 4px 6px 4px 14px;
+  margin-bottom: 12px;
+  transition: border-color 0.2s;
+}
+
+.panel-search-box:focus-within {
+  border-color: var(--accent-red);
+  box-shadow: 0 0 12px var(--accent-glow-soft);
+}
+
+.panel-search-box input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 12.5px;
+  outline: none;
+}
+
+.panel-search-box input::placeholder {
+  color: var(--text-dim);
+}
+
+.mic-round-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 42, 68, 0.15);
+  border: 1px solid var(--accent-red);
+  color: var(--accent-red);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.mic-round-btn:hover, .mic-round-btn.recording {
+  background: var(--accent-red);
+  color: #fff;
+  box-shadow: 0 0 12px var(--accent-red);
+}
+
+/* 4 Action Grid Tiles */
+.panel-action-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.action-tile {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-sm);
+  padding: 8px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.action-tile:hover {
+  background: rgba(255, 42, 68, 0.12);
+  border-color: var(--accent-red);
+  transform: translateY(-2px);
+}
+
+.tile-icon {
+  font-size: 16px;
+}
+.tile-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+/* Views Container */
+.panel-views-wrapper {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+}
+
+.tab-view-pane {
+  display: none;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+}
+
+.tab-view-pane.active {
+  display: flex;
+}
+
+.chat-message-list {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-right: 4px;
+}
+
+.chat-bubble {
+  padding: 9px 12px;
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.chat-bubble.assistant {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  align-self: flex-start;
+  color: #e2e8f0;
+}
+
+.chat-bubble.user {
+  background: rgba(255, 42, 68, 0.18);
+  border: 1px solid var(--border-red);
+  align-self: flex-end;
+  color: #fff;
+}
+
+.chat-controls-subrow {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.pill-mini-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pill-mini-btn:hover {
+  background: rgba(255, 42, 68, 0.2);
+  color: #fff;
+  border-color: var(--accent-red);
+}
+
+.pill-mini-btn.hidden {
+  display: none;
+}
+
+/* ============================================================
+   4. TODAY'S PRIORITIES CARD
+   ============================================================ */
+.priorities-card {
+  position: relative;
+  width: 100%;
+  padding: 14px 18px;
+  z-index: 850;
+  border-bottom: 2px solid var(--accent-red);
+}
+
+.priorities-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.priorities-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.view-all-link {
+  background: transparent;
+  border: none;
+  color: var(--accent-red);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.view-all-link:hover {
+  text-decoration: underline;
+}
+
+.priorities-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.priority-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 4px 0;
+  transition: color 0.2s;
+}
+
+.radio-indicator {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid #555c68;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.priority-item:hover .radio-indicator {
+  border-color: var(--accent-red);
+}
+
+.priority-item.checked .radio-indicator {
+  border-color: var(--accent-red);
+}
+
+.priority-item.checked .radio-indicator::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-red);
+  box-shadow: 0 0 8px var(--accent-red);
+}
+
+.priority-label {
+  font-size: 13px;
+  color: #d1d5db;
+}
+
+.priority-item.checked .priority-label {
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ============================================================
+   5. FLOATING COMMAND BAR
+   ============================================================ */
+.command-bar-floating {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--accent-red);
+  box-shadow: 0 0 20px rgba(255, 42, 68, 0.25);
+  z-index: 900;
+}
+
+/* ============================================================
+   6. COMPACT ORB / ROAMING MODE
+   ============================================================ */
+body.mode-orb {
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+body.mode-orb .window-controls-bar,
+body.mode-orb .mantis-speech-banner,
+body.mode-orb .assistant-main-panel,
+body.mode-orb .priorities-card,
+body.mode-orb .command-bar-floating {
+  display: none !important;
+}
+body.mode-orb .mantis-character-cluster {
+  margin-top: 0;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+}
+body.mode-orb .mantis-avatar-box {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 42, 68, 0.25) 0%, rgba(15, 17, 23, 0.9) 70%);
+  border: 1.5px solid rgba(255, 42, 68, 0.5);
+  box-shadow: 0 0 28px rgba(255, 42, 68, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+body.mode-orb .mantis-avatar-box:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 35px rgba(255, 42, 68, 0.7);
+}
+
+.cutie-wiggle {
+  animation: cutieWiggle 0.45s ease-in-out infinite alternate !important;
+}
+
+@keyframes cutieWiggle {
+  0% { transform: scale(1.08) rotate(-4deg); }
+  100% { transform: scale(1.15) rotate(4deg); }
+}
+
+.waveform-btn {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.wave-bar {
+  width: 3px;
+  height: 16px;
+  background: var(--accent-red);
+  border-radius: 2px;
+  animation: wavePulse 1.2s infinite ease-in-out;
+}
+.wave-bar:nth-child(2) { height: 22px; animation-delay: 0.2s; }
+.wave-bar:nth-child(3) { height: 12px; animation-delay: 0.4s; }
+.wave-bar:nth-child(4) { height: 18px; animation-delay: 0.6s; }
+
+@keyframes wavePulse {
+  0%, 100% { transform: scaleY(0.6); }
+  50% { transform: scaleY(1.2); }
+}
+
+.command-bar-floating input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 13.5px;
+  outline: none;
+}
+
+.command-bar-floating input::placeholder {
+  color: var(--text-dim);
+}
+
+.send-arrow-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.send-arrow-btn:hover {
+  color: var(--accent-red);
+  transform: scale(1.15);
+}
+
+/* ============================================================
+   6. MODAL
+   ============================================================ */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(16px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-backdrop.hidden {
+  display: none;
+}
+
+.modal-card {
+  width: 380px;
+  background: #11131a;
+  border: 1px solid var(--accent-red);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  box-shadow: 0 0 30px rgba(255, 42, 68, 0.3);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.modal-header h3 {
+  font-size: 14px;
+  color: #fff;
+}
+.modal-body label {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 4px;
+}
+.modal-body input, .modal-body select {
+  background: #181b24;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 12.5px;
+}

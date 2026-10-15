@@ -1,0 +1,30 @@
+{
+  "name": "mantis",
+  "version": "1.0.0",
+  "description": "MANTIS — Personal AI Desktop Companion for Windows 11",
+  "main": "src/main/index.js",
+  "scripts": {
+    "start": "electron . --log-level=3",
+    "test": "node tests/db.test.js && node tests/localEngine.test.js && node tests/learning.test.js && node tests/evolution.test.js && node tests/brainAndAccess.test.js",
+    "test:smoke": "electron . --smoke-test"
+  },
+  "keywords": [
+    "mantis",
+    "ai-companion",
+    "desktop-assistant",
+    "electron",
+    "windows11"
+  ],
+  "author": "Mantis AI",
+  "license": "MIT",
+  "type": "commonjs",
+  "devDependencies": {
+    "electron": "^44.7.0"
+  },
+  "dependencies": {
+    "agora-agents": "^2.12.0",
+    "agora-rtc-sdk-ng": "^4.24.9",
+    "agora-token": "^2.0.7",
+    "msedge-tts": "^2.0.9"
+  }
+}

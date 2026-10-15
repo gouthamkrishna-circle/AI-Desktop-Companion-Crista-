@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' https: wss: blob:; media-src 'self' blob: data: https:; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data: https:;">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRISTA — Desktop Companion</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/components.css">
+</head>
+<body class="desktop-hud-theme">
+
+  <!-- ================= 1. WINDOW CONTROLS (TOP RIGHT) ================= -->
+  <div class="window-controls-bar no-drag interactive-card">
+    <button id="btn-toggle-roam" class="win-btn active" title="Toggle Desktop Roaming Mode (Crista moves around your desktop)">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+    </button>
+    <button id="btn-win-pin" class="win-btn pinned" title="Toggle Always on Top">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M16 12V4h1V2H7v2h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z"/></svg>
+    </button>
+    <button id="btn-win-minimize" class="win-btn" title="Minimize">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M19 13H5v-2h14v2z"/></svg>
+    </button>
+    <button id="btn-win-close" class="win-btn win-close" title="Close / Hide">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+    </button>
+  </div>
+
+  <!-- ================= 2. CHIBI CRISTA COMPANION (ROAMS & FLOATS) ================= -->
+  <div class="mantis-character-cluster interactive-card no-drag" id="mantis-roaming-character">
+    <!-- Speech bubble (Attached to Crista) -->
+    <div class="mantis-speech-banner" id="mantis-speech-bubble">
+      <div class="speech-banner-top">
+        <span class="speech-tag">CRISTA</span>
+        <span class="speech-time" id="speech-timestamp">18:40</span>
+        <button id="btn-dismiss-speech" class="dismiss-speech-btn">✕</button>
+      </div>
+      <div class="speech-banner-body" id="speech-bubble-text">
+        <strong>Hey boss! 👋</strong><br>
+        I'm Crista. Watching your screen silently.<br>
+        Ask me anything or say <em>"Hey Crista"</em> when you need me!
+      </div>
+    </div>
+
+    <!-- Robotic Chibi Avatar (Draggable & Clickable) -->
+    <div class="mantis-avatar-box" id="avatar-companion-btn" title="Click to start voice call | Drag to move Crista">
+      <img src="assets/crista_avatar.svg" alt="Crista" class="chibi-avatar-img" id="avatar-img-element">
+      <div class="avatar-aura-glow"></div>
+      <div class="eye-lens-glow"></div>
+    </div>
+  </div>
+
+  <!-- ================= 3. RIGHT SIDE MAIN ASSISTANT PANEL ================= -->
+  <div class="assistant-main-panel interactive-card no-drag" id="assistant-panel">
+    <!-- Panel Header -->
+    <div class="panel-header drag-region">
+      <div class="panel-title-group no-drag">
+        <span class="panel-title">CRISTA</span>
+        <span class="online-indicator"><span class="pulse-dot"></span> ONLINE</span>
+      </div>
+      <div class="panel-actions no-drag">
+        <button id="btn-call-mode" class="header-icon-btn" title="Toggle Agora Live Call (Full-Duplex Voice)">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-1.57 1.97c-2.83-1.44-5.15-3.75-6.59-6.59l1.97-1.57c.28-.28.37-.67.25-1.02A11.36 11.36 0 018.57 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.62c0-.55-.45-1-.99-1z"/></svg>
+        </button>
+        <button id="btn-panel-settings" class="header-icon-btn" title="Settings">⚙️</button>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="panel-tab-bar">
+      <button class="panel-tab active" data-tab="chat">💬 Chat</button>
+      <button class="panel-tab" data-tab="today">📅 Today</button>
+      <button class="panel-tab" data-tab="learning">🎓 Learning</button>
+      <button class="panel-tab" data-tab="tasks">✅ Tasks</button>
+    </div>
+
+    <!-- Input Bar with Red Mic -->
+    <div class="panel-search-box">
+      <input type="text" id="chat-input-text" placeholder="Ask Crista anything...">
+      <button id="main-mic-btn" class="mic-round-btn" title="Click to speak (or say 'Hey Crista')">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5-3c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+      </button>
+    </div>
+
+    <!-- 4 Action Grid Tiles -->
+    <div class="panel-action-grid">
+      <button class="action-tile" id="tile-plan-day">
+        <span class="tile-icon">📅</span>
+        <span class="tile-label">Plan Day</span>
+      </button>
+      <button class="action-tile" id="tile-open-app">
+        <span class="tile-icon">🗂️</span>
+        <span class="tile-label">Open App</span>
+      </button>
+      <button class="action-tile" id="tile-youtube">
+        <span class="tile-icon">▶️</span>
+        <span class="tile-label">YouTube</span>
+      </button>
+      <button class="action-tile" id="tile-focus">
+        <span class="tile-icon">🎯</span>
+        <span class="tile-label">Focus</span>
+      </button>
+    </div>
+
+    <!-- Tab View Containers -->
+    <div class="panel-views-wrapper">
+      <!-- 1. Chat Tab Content -->
+      <div id="view-chat" class="tab-view-pane active">
+        <div id="chat-messages-container" class="chat-message-list">
+          <div class="chat-bubble assistant">
+            Hey boss! I am Crista, silently observing your screen in the background while you work. Whenever you want to know what is appearing on screen, say <strong>"Crista, what's on my screen?"</strong> or ask me to <strong>"Type [text]"</strong> and I will handle it!
+          </div>
+        </div>
+        <div class="chat-controls-subrow">
+          <button id="btn-screen-vision" class="pill-mini-btn" title="Inspect screen now">👁️ Explain Screen</button>
+          <button id="btn-type-prompt" class="pill-mini-btn" title="Type into active window">⌨️ Type Active</button>
+          <button id="btn-stop-speech" class="pill-mini-btn hidden" title="Mute voice">🔇 Stop</button>
+        </div>
+      </div>
+
+      <!-- 2. Today Tab Content -->
+      <div id="view-today" class="tab-view-pane">
+        <div class="today-brief-header">Today's Focus & Schedule (IST)</div>
+        <div class="today-metrics-row">
+          <div class="metric-pill">Active: <span id="metric-active-count">0</span></div>
+          <div class="metric-pill">Sprint: <span id="metric-pomodoro">25m</span></div>
+        </div>
+        <div id="today-tasks-container" class="today-task-scroller"></div>
+      </div>
+
+      <!-- 3. Learning Tab Content -->
+      <div id="view-learning" class="tab-view-pane">
+        <div class="input-with-button">
+          <input type="text" id="learn-url-input" placeholder="Paste YouTube link...">
+          <button id="btn-process-video" class="pill-btn primary-pill">Analyze</button>
+        </div>
+        <div id="lesson-cards-container" class="lesson-cards-scroller"></div>
+      </div>
+
+      <!-- 4. Tasks Tab Content -->
+      <div id="view-tasks" class="tab-view-pane">
+        <div class="input-with-button">
+          <input type="text" id="quick-task-input" placeholder="+ Add a new priority...">
+          <button id="btn-add-quick-task" class="pill-btn primary-pill">Add</button>
+        </div>
+        <div id="full-tasks-list" class="task-items-scroller"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 4. TODAY'S PRIORITIES CARD ================= -->
+  <div class="priorities-card interactive-card no-drag" id="hud-priorities-card">
+    <div class="priorities-header">
+      <span class="priorities-title">Today's Priorities</span>
+      <button class="view-all-link" id="link-view-all-tasks">View All →</button>
+    </div>
+    <div class="priorities-checklist" id="hud-priorities-list">
+      <div class="priority-item checked" data-task-idx="0">
+        <span class="radio-indicator checked"></span>
+        <span class="priority-label">Finish project work</span>
+      </div>
+      <div class="priority-item" data-task-idx="1">
+        <span class="radio-indicator"></span>
+        <span class="priority-label">ECET preparation</span>
+      </div>
+      <div class="priority-item" data-task-idx="2">
+        <span class="radio-indicator"></span>
+        <span class="priority-label">Workout</span>
+      </div>
+      <div class="priority-item" data-task-idx="3">
+        <span class="radio-indicator"></span>
+        <span class="priority-label">Editing / Content</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 5. FLOATING COMMAND BAR ================= -->
+  <div class="command-bar-floating interactive-card no-drag" id="hud-command-bar">
+    <button class="waveform-btn" id="btn-command-voice" title="Agora Voice Call / Speak">
+      <span class="wave-bar"></span>
+      <span class="wave-bar"></span>
+      <span class="wave-bar"></span>
+      <span class="wave-bar"></span>
+    </button>
+    <input type="text" id="hud-command-input" placeholder="Ask Crista or press Ctrl + Space...">
+    <button class="send-arrow-btn" id="btn-command-send" title="Send (Enter)">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+    </button>
+  </div>
+
+  <!-- Settings Modal (Glass overlay) -->
+  <div id="settings-modal" class="modal-backdrop interactive-card no-drag hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Crista Preferences & AI Settings</h3>
+        <button id="btn-close-settings" class="win-btn">✕</button>
+      </div>
+      <div class="modal-body">
+        <label>Callsign:</label>
+        <input type="text" id="setting-callsign" value="boss" style="width:100%; margin-bottom:12px;">
+
+        <label>Silent Screen Vision Observer:</label>
+        <div style="font-size:12px; color:#8e94a0; margin-bottom:12px;">
+          ✓ Automatically observes screen silently. Replies only when you ask what's appearing on screen.
+        </div>
+
+        <label>AI Provider:</label>
+        <select id="setting-ai-provider" style="width:100%; margin-bottom:12px;">
+          <option value="local">Local Offline Engine</option>
+          <option value="gemini">Google Gemini Live</option>
+          <option value="openai">OpenAI GPT-4o-mini</option>
+        </select>
+
+        <label>Natural Female Voice Model:</label>
+        <select id="setting-voice-model" style="width:100%; margin-bottom:12px;">
+          <option value="en-US-JennyMultilingualNeural">Jenny (Natural Conversational Female - Recommended)</option>
+          <option value="en-US-AvaMultilingualNeural">Ava (Warm Expressive Female)</option>
+          <option value="te-IN-ShrutiNeural">Shruti (Telugu Conversational Female)</option>
+          <option value="hi-IN-SwaraNeural">Swara (Hindi Conversational Female)</option>
+          <option value="en-GB-SoniaNeural">Sonia (British Female)</option>
+        </select>
+
+        <button id="btn-save-settings" class="pill-btn primary-pill" style="width:100%;">Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="scripts/AgoraRTC.min.js"></script>
+  <script src="scripts/companionOrb.js"></script>
+  <script src="scripts/voice.js"></script>
+  <script src="scripts/chat.js"></script>
+  <script src="scripts/planner.js"></script>
+  <script src="scripts/learning.js"></script>
+  <script src="scripts/memory.js"></script>
+  <script src="scripts/automationUi.js"></script>
+  <script src="scripts/settings.js"></script>
+  <script src="scripts/app.js"></script>
+</body>
+</html>

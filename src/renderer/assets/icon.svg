@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <radialGradient id="mantisGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00ffcc" stop-opacity="1" />
+      <stop offset="50%" stop-color="#00a896" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#028090" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="mantisCore" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00ffc4" />
+      <stop offset="50%" stop-color="#05668d" />
+      <stop offset="100%" stop-color="#023047" />
+    </linearGradient>
+    <filter id="neonBlur" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Dark outer background -->
+  <rect width="128" height="128" rx="36" fill="#0c1015" />
+  
+  <!-- Outer Glow Ring -->
+  <circle cx="64" cy="64" r="50" fill="none" stroke="#00ffcc" stroke-opacity="0.25" stroke-width="2" />
+  
+  <!-- Ambient Orb Glow -->
+  <circle cx="64" cy="64" r="42" fill="url(#mantisGlow)" opacity="0.6" />
+
+  <!-- Core Sphere -->
+  <circle cx="64" cy="64" r="32" fill="url(#mantisCore)" filter="url(#neonBlur)" />
+
+  <!-- Mantis Antennae / Cyber Wings -->
+  <path d="M46 52 C 40 38, 48 26, 62 34" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity="0.9" />
+  <path d="M82 52 C 88 38, 80 26, 66 34" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity="0.9" />
+
+  <!-- Eye Nodes -->
+  <circle cx="52" cy="58" r="4.5" fill="#ffffff" />
+  <circle cx="76" cy="58" r="4.5" fill="#ffffff" />
+  <circle cx="52" cy="58" r="2.5" fill="#00ffc4" />
+  <circle cx="76" cy="58" r="2.5" fill="#00ffc4" />
+
+  <!-- Central Energy Core -->
+  <circle cx="64" cy="74" r="6" fill="#00ffcc" opacity="0.9" filter="url(#neonBlur)" />
+</svg>
